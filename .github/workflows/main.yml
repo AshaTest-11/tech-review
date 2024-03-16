@@ -3,7 +3,7 @@ name: TesQA Pipeline
 on:
   push:
     branches:
-      - production
+      - Production
 
 jobs:
   build:
