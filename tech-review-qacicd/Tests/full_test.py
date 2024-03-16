@@ -1,6 +1,6 @@
 import unittest
 from decimal import Decimal
-from Tests.main import databaseCheck
+from main import databaseCheck
 from ContextStorage import contextStorage
 
 
