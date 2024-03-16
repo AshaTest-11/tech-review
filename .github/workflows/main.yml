@@ -13,18 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Setup Docker
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.x"
-
-      - name: Build and run Docker containers
-        run: |
-          docker-compose up -d --build
-          docker-compose down
-          docker-compose up -d
-        working-directory: tech-review-qacicd
-
   test:
     runs-on: ubuntu-latest
 
@@ -37,24 +25,23 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: "3.x"
+          python-version: '3.x'
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+      - name: Build and run Docker containers
+        run: |
+          docker-compose up -d --build
+          docker-compose down
+          docker-compose up -d
         working-directory: tech-review-qacicd
 
       - name: Run Python Unit Tests
         run: |
-          docker exec -it web bash
-          python manage.py makemigrations testapp
-          python manage.py migrate
-          python manage.py test
+          docker-compose run web python Tests/full_test.py test
         working-directory: tech-review-qacicd
 
       - name: Run Selenium Tests
         run: |
-          cd Tests
-          
+          docker-compose run web python Tests/WebUIAutomation.py test
         working-directory: tech-review-qacicd
 
   deploy:
@@ -71,7 +58,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: "your-aws-region"
+          aws-region: 'your-aws-region'
 
       - name: Deploy to AWS EKS and ECR
         run: |
