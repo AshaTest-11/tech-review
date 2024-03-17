@@ -36,8 +36,8 @@ jobs:
 
       - name: Run Python Unit Tests
         run: |
-          docker-compose run web python Tests/full_test.py test
-        working-directory: tech-review-qacicd
+          docker-compose run web python full_test.py test
+        working-directory: tech-review-qacicd/Tests
 
       - name: Run Selenium Tests
         run: |
